@@ -5,17 +5,10 @@ const express = require("express");
 const port = process.env.PORT || 3000;
 
 const mongoose = require("mongoose");
-const {
-  DB_HOST,
-  DB_PASSWORD,
-  DB_USER,
-  IP_SERVER,
-  API_VERSION,
-} = require("./constants");
 
 mongoose.set("strictQuery", true);
 mongoose.connect(
-  `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/`,
+  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/`,
   { useNewUrlParser: true, useUnifiedTopology: true },
   (error) => {
     if (error) console.log("error:", error);
