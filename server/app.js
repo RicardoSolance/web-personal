@@ -1,5 +1,4 @@
 const express = require("express");
-const { API_VERSION } = require("./constants");
 const cors = require("cors");
 const app = express();
 
