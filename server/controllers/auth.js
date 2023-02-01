@@ -11,7 +11,6 @@ const register = async (req, res, next) => {
     if (!password) res.status(400).send({ msg: "la contrseña es obligatorio" });
     const hashPassword = bcrypt.hashSync(password, salt);
     const isUser = await User.findOne({ email });
-    console.log("hash", hashPassword);
     if (isUser) {
       res.json({ message: " Usuario no ha podido ser registrado" });
     } else {
@@ -23,7 +22,6 @@ const register = async (req, res, next) => {
         active: false,
         password: hashPassword,
       });
-      console.log("usuario", user);
       await user.save();
       res.json({ message: " Usuario registrado" });
     }

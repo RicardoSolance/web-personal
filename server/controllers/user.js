@@ -12,4 +12,20 @@ const getMe = async (req, res, next) => {
   // res.status(200).send({ msg: "OK" });
 };
 
-module.exports = { getMe };
+const getUsers = async (req, res) => {
+  const { active } = req.query;
+  let response = null;
+
+  if (active === undefined) {
+    response = await User.find();
+  } else {
+    response = await User.find({ active });
+  }
+
+  res.status(200).send(response);
+};
+
+const createUser = async (req, res) => {
+  res.status(200).send({ msg: "Ok" });
+};
+module.exports = { getMe, getUsers, createUser };
