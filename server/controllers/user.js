@@ -26,6 +26,7 @@ const getUsers = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
+  console.log("entreee", req.body);
   res.status(200).send({ msg: "Ok" });
 };
 module.exports = { getMe, getUsers, createUser };
