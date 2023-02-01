@@ -8,6 +8,6 @@ const api = express.Router();
 
 api.get("/user/me", [user.isAuthenticated], User.getMe);
 api.get("/user/users", [user.isAuthenticated], User.getUsers);
-api.post("/user", [user.isAuthenticated, md_upload], User.createUser);
+api.post("/user", [user.isAuthenticated], User.createUser);
 
 module.exports = api;
