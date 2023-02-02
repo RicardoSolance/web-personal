@@ -1,4 +1,6 @@
 const User = require("../models/user");
+const bcrypt = require("bcrypt");
+const jwt = require("../utils/jwt");
 
 const getMe = async (req, res, next) => {
   const { email, role, iat, exp } = req.user;
@@ -26,6 +28,37 @@ const getUsers = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  res.status(200).send({ msg: "Ok" });
+  const { fistname, lastname, password, email } = req.body;
+  const salt = bcrypt.genSaltSync(10);
+  try {
+    if (res.locals.role !== "admin") {
+      res
+        .status(401)
+        .send({ msg: "No tienes permisos para realizar esta operacion" });
+    } else {
+      if (!email) res.status(400).send({ msg: "El email es obligatorio" });
+      if (!password)
+        res.status(400).send({ msg: "la contrseña es obligatoria" });
+      const hashPassword = bcrypt.hashSync(password, salt);
+      const isUser = await User.findOne({ email });
+      console.log("usuario:", isUser);
+      if (isUser) {
+        res.status(400).send({ msg: " Usuario no puede ser registrado" });
+      } else {
+        const user = new User({
+          fistname,
+          lastname,
+          email: email.toLowerCase(),
+          role: "user",
+          active: false,
+          password: hashPassword,
+        });
+        await user.save();
+        res.json({ msg: " Usuario registrado" });
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
 module.exports = { getMe, getUsers, createUser };

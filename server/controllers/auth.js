@@ -8,7 +8,7 @@ const register = async (req, res, next) => {
   const { fistname, lastname, password, email } = req.body;
   try {
     if (!email) res.status(400).send({ msg: "El email es obligatorio" });
-    if (!password) res.status(400).send({ msg: "la contrseña es obligatorio" });
+    if (!password) res.status(400).send({ msg: "la contrseña es obligatoria" });
     const hashPassword = bcrypt.hashSync(password, salt);
     const isUser = await User.findOne({ email });
     if (isUser) {
