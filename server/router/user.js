@@ -9,5 +9,6 @@ const api = express.Router();
 api.get("/user/me", [user.isAuthenticated], User.getMe);
 api.get("/user/users", [user.isAuthenticated], User.getUsers);
 api.post("/user", [user.isAuthenticated, md_upload], User.createUser);
+api.patch("/user/:email", [user.isAuthenticated, md_upload], User.updateUser);
 
 module.exports = api;

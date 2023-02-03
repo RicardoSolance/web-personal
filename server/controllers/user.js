@@ -2,6 +2,7 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("../utils/jwt");
 const image = require("../utils/image");
+const { use } = require("../router/user");
 
 const getMe = async (req, res, next) => {
   const { email, role, iat, exp } = req.user;
@@ -48,6 +49,7 @@ const createUser = async (req, res) => {
         let imagePath = "";
         if (req.files.avatar) {
           imagePath = image.getImagePath(req.files.avatar);
+          console.log("image ruta :", imagePath);
         }
         const user = new User({
           fistname,
@@ -66,4 +68,21 @@ const createUser = async (req, res) => {
     console.log(error);
   }
 };
-module.exports = { getMe, getUsers, createUser };
+
+const updateUser = async (req, res) => {
+  try {
+    const { email } = req.params;
+    console.log("req body:", req.body, "email:", email);
+
+    res.status(200).send({ msg: "ok Correcta" });
+
+    // User.findOneAndUpdate({ email }, req.body, (error) => {
+    //   if (error) {
+    //     res.status(400).send({ msg: "Error al actualizar el usuario" });
+    //   } else {
+    //     res.status(200).send({ msg: "Actualizacion Correcta" });
+    //   }
+    // });
+  } catch (error) {}
+};
+module.exports = { getMe, getUsers, createUser, updateUser };
