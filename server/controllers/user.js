@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("../utils/jwt");
+const image = require("../utils/image");
 
 const getMe = async (req, res, next) => {
   const { email, role, iat, exp } = req.user;
@@ -41,10 +42,13 @@ const createUser = async (req, res) => {
         res.status(400).send({ msg: "la contrseña es obligatoria" });
       const hashPassword = bcrypt.hashSync(password, salt);
       const isUser = await User.findOne({ email });
-      console.log("usuario:", isUser);
       if (isUser) {
         res.status(400).send({ msg: " Usuario no puede ser registrado" });
       } else {
+        let imagePath = "";
+        if (req.files.avatar) {
+          imagePath = image.getImagePath(req.files.avatar);
+        }
         const user = new User({
           fistname,
           lastname,
@@ -52,6 +56,7 @@ const createUser = async (req, res) => {
           role: "user",
           active: false,
           password: hashPassword,
+          avatar: imagePath,
         });
         await user.save();
         res.json({ msg: " Usuario registrado" });
