@@ -7,7 +7,7 @@ const { use } = require("../router/user");
 const getMe = async (req, res, next) => {
   const { email, role, iat, exp } = req.user;
 
-  const user = await User.findOne({ email }, { _id: 0 }); //no busca el user con el email del autenticado y nos excluye el campo _id
+  const user = await User.findOne({ email }, { _id: 0 }); //nos busca el user con el email del autenticado y nos excluye el campo _id
   if (!user) {
     res.status(400).send({ msg: "No se ha encontrado el mensaje" });
   } else {
@@ -72,17 +72,19 @@ const createUser = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const { email } = req.params;
-    console.log("req body:", req.body, "email:", email);
-
-    res.status(200).send({ msg: "ok Correcta" });
-
-    // User.findOneAndUpdate({ email }, req.body, (error) => {
-    //   if (error) {
-    //     res.status(400).send({ msg: "Error al actualizar el usuario" });
-    //   } else {
-    //     res.status(200).send({ msg: "Actualizacion Correcta" });
-    //   }
-    // });
-  } catch (error) {}
+    const dataToUpdate = req.body;
+    const user = await User.findOne({ email: email.toLowerCase() }, { _id: 0 });
+    if (!user) {
+      res.status(404).send({ msg: "No se puede actualizar a este usuario" });
+    } else {
+      await User.findOneAndUpdate({ email: email.toLowerCase() }, dataToUpdate);
+      res.status(404).send({ msg: "USuario Actuaizado" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
-module.exports = { getMe, getUsers, createUser, updateUser };
+const deleteUser = async (req, res) => {
+  res.status(200).send({ msg: "deleted" });
+};
+module.exports = { getMe, getUsers, createUser, updateUser, deleteUser };
