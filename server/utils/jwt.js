@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 // const { SECTRET_KEY } = require("../constants");
-const SESSION_TIME = 30 * 60;
+const SESSION_TIME = 60 * 60;
 
 const createAccesToken = (user) => {
   const expireSession = Date.now() + SESSION_TIME * 1000;
