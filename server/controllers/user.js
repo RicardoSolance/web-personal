@@ -4,6 +4,7 @@ const jwt = require("../utils/jwt");
 const image = require("../utils/image");
 const { use } = require("../router/user");
 
+const salt = bcrypt.genSaltSync(10);
 const getMe = async (req, res, next) => {
   const { email, role, iat, exp } = req.user;
 
@@ -31,7 +32,6 @@ const getUsers = async (req, res) => {
 
 const createUser = async (req, res) => {
   const { fistname, lastname, password, email } = req.body;
-  const salt = bcrypt.genSaltSync(10);
   try {
     if (res.locals.role !== "admin") {
       res
@@ -47,10 +47,7 @@ const createUser = async (req, res) => {
         res.status(400).send({ msg: " Usuario no puede ser registrado" });
       } else {
         let imagePath = "";
-        if (req.files.avatar) {
-          imagePath = image.getImagePath(req.files.avatar);
-          console.log("image ruta :", imagePath);
-        }
+        if (req.files.avatar) imagePath = image.getImagePath(req.files.avatar);
         const user = new User({
           fistname,
           lastname,
@@ -77,14 +74,32 @@ const updateUser = async (req, res) => {
     if (!user) {
       res.status(404).send({ msg: "No se puede actualizar a este usuario" });
     } else {
+      if (dataToUpdate.password) {
+        const hashPassword = bcrypt.hashSync(dataToUpdate.password, salt);
+        dataToUpdate.password = hashPassword;
+      } else {
+        delete dataToUpdate.password;
+      }
+
+      if (req.files.avatar) {
+        imagePath = image.getImagePath(req.files.avatar);
+        dataToUpdate.avatar = imagePath;
+      }
       await User.findOneAndUpdate({ email: email.toLowerCase() }, dataToUpdate);
-      res.status(404).send({ msg: "USuario Actuaizado" });
+      res.status(404).send({ msg: "Usuario Actuaizado" });
     }
   } catch (error) {
     console.log(error);
   }
 };
 const deleteUser = async (req, res) => {
+  const { email } = req.params;
+  try {
+    User.findOneAndDelete({ email: email.toLowerCase() });
+    res.status(200).send({ msg: "Usuario Eliminado de la BD" });
+  } catch (error) {
+    console.log(error);
+  }
   res.status(200).send({ msg: "deleted" });
 };
 module.exports = { getMe, getUsers, createUser, updateUser, deleteUser };
