@@ -66,7 +66,7 @@ const createUser = async (req, res) => {
   }
 };
 
-const updateUser = async (req, res) => {
+const updateUser = async (req, res, next) => {
   try {
     const { email } = req.params;
     const dataToUpdate = req.body;
@@ -89,17 +89,17 @@ const updateUser = async (req, res) => {
       res.status(404).send({ msg: "Usuario Actuaizado" });
     }
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
-const deleteUser = async (req, res) => {
-  const { email } = req.params;
+const deleteUser = async (req, res, next) => {
+  const id = req.params.id;
   try {
-    User.findOneAndDelete({ email: email.toLowerCase() });
-    res.status(200).send({ msg: "Usuario Eliminado de la BD" });
+    await User.findOneAndDelete({ _id: id });
+    res.status(200).send({ ok: 1 });
   } catch (error) {
-    console.log(error);
+    next(error);
   }
-  res.status(200).send({ msg: "deleted" });
 };
+
 module.exports = { getMe, getUsers, createUser, updateUser, deleteUser };
