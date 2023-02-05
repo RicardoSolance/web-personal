@@ -5,6 +5,7 @@ const app = express();
 //import routing
 const autRouter = require("./router/auth");
 const userRouter = require("./router/user");
+const menuRouter = require("./router/menu");
 
 //config Body Parser--->> el body parser esta deprecado
 app.use(express.urlencoded({ extended: true }));
@@ -20,5 +21,6 @@ app.use(cors());
 
 app.use(`/api/${process.env.API_VERSION}`, autRouter);
 app.use(`/api/${process.env.API_VERSION}`, userRouter);
+app.use(`/api/${process.env.API_VERSION}`, menuRouter);
 
 module.exports = app;
