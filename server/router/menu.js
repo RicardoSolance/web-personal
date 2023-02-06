@@ -7,5 +7,6 @@ const api = express.Router();
 api.get("/menu", menuController.getMenu);
 api.post("/menu", [user.isAuthenticated], menuController.createMenu);
 api.patch("/menu/:id", [user.isAuthenticated], menuController.updateMenu);
+api.delete("/menu/:id", [user.isAuthenticated], menuController.deleteMenu);
 
 module.exports = api;
