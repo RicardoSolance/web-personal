@@ -53,11 +53,20 @@ const updateCourse = async (req, res, next) => {
         dataToUpdate.miniature = imagePath;
       }
       await Course.findOneAndUpdate({ _id: id }, dataToUpdate);
-      res.status(404).send({ msg: "Curso Actuaizado" });
+      res.status(200).send({ msg: "Curso Actuaizado" });
     }
   } catch (error) {
     next(error);
   }
 };
+const deleteCourse = async (req, res) => {
+  const id = req.params.id;
+  try {
+    await Course.findOneAndDelete({ _id: id });
+    res.status(200).send({ ok: "Curso borrado con Éxito" });
+  } catch (error) {
+    next(error);
+  }
+};
 
-module.exports = { createCourse, getCourses, updateCourse };
+module.exports = { createCourse, getCourses, updateCourse, deleteCourse };
