@@ -1,5 +1,5 @@
 import React from "react"
-import { Button } from 'semantic-ui-react'
+
 
 
 function App() {
@@ -8,8 +8,7 @@ function App() {
   return (
    <div>
     <h1>web personal FRONTEND</h1>
-    <Button content='Primary' primary />
-    <Button secondary>Secondary</Button>
+    <button class="btn btn-main">Primary button</button>
    </div>
   )
 }
