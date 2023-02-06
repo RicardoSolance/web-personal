@@ -6,7 +6,8 @@ const is = require("../middlewares/authenticated");
 const md_upload = multiparty({ uploadDir: "./uploads/course" });
 const api = express.Router();
 
-api.post("/course", [is.isAuthenticated, md_upload], course.createCourse);
 api.get("/course", course.getCourses);
+api.post("/course", [is.isAuthenticated, md_upload], course.createCourse);
+api.patch("/course/:id", [is.isAuthenticated, md_upload], course.updateCourse);
 
 module.exports = api;
