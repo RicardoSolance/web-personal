@@ -86,7 +86,7 @@ const updateUser = async (req, res, next) => {
         dataToUpdate.avatar = imagePath;
       }
       await User.findOneAndUpdate({ email: email.toLowerCase() }, dataToUpdate);
-      res.status(404).send({ msg: "Usuario Actuaizado" });
+      res.status(200).send({ msg: "Usuario Actuaizado" });
     }
   } catch (error) {
     next(error);
