@@ -1,5 +1,6 @@
 const Blog = require("../models/blog");
 const image = require("../utils/image");
+const helpme = require("../helpers/converters");
 
 const getBlogs = async (req, res, next) => {
   const { page = 1, limit = 6 } = req.query;
@@ -27,6 +28,7 @@ const createBlog = async (req, res, next) => {
     article.created = new Date();
     const imagePath = image.getImagePath(req.files.miniature);
     article.miniature = imagePath;
+    article.path = helpme.fillSpace(article.title);
     article.save((error, blogStored) => {
       if (error) {
         res.status(400).send({ msg: "no se ha podido crear este blog" });
@@ -50,8 +52,9 @@ const updateBlog = async (req, res, next) => {
     } else {
       if (req.files.miniature) {
         imagePath = image.getImagePath(req.files.avatar);
-        blog.miniature = imagePath;
+        article.miniature = imagePath;
       }
+      article.path = helpme.fillSpace(article.title);
       await Blog.findByIdAndUpdate({ _id: id }, article);
       res.status(200).send({ msg: "Blog Actualizado" });
     }
@@ -59,4 +62,32 @@ const updateBlog = async (req, res, next) => {
     next(error);
   }
 };
-module.exports = { createBlog, getBlogs, updateBlog };
+
+const getSingleBlog = async (req, res, next) => {
+  const { path } = req.params;
+  try {
+    const article = await Blog.findOne({ path });
+    if (!article) {
+      res.status(500).send({ msg: "Problemas al cargar ese Articulo" });
+    } else {
+      res.status(400).send(article);
+    }
+  } catch (error) {}
+};
+
+const deleteBlog = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    await Blog.findOneAndDelete({ _id: id });
+    res.status(200).send({ ok: "Blog borrado con Éxito" });
+  } catch (error) {
+    next(error);
+  }
+};
+module.exports = {
+  createBlog,
+  getBlogs,
+  updateBlog,
+  deleteBlog,
+  getSingleBlog,
+};
