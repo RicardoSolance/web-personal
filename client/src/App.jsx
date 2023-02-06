@@ -9,6 +9,7 @@ function App() {
    <div>
     <h1>Inicializando mi web personal FRONT</h1>
     <Button content='Primary' primary />
+    <Button secondary>Secondary</Button>
    </div>
   )
 }
