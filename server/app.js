@@ -8,7 +8,7 @@ const userRouter = require("./router/user");
 const menuRouter = require("./router/menu");
 const courseRouter = require("./router/course");
 const blogRouter = require("./router/blog");
-
+const newsLetterRouter = require("./router/newsLetter");
 //config Body Parser--->> el body parser esta deprecado
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); //para habilitar la recepcion de datos en un request
@@ -26,5 +26,6 @@ app.use(`/api/${process.env.API_VERSION}`, userRouter);
 app.use(`/api/${process.env.API_VERSION}`, menuRouter);
 app.use(`/api/${process.env.API_VERSION}`, courseRouter);
 app.use(`/api/${process.env.API_VERSION}`, blogRouter);
+app.use(`/api/${process.env.API_VERSION}`, newsLetterRouter);
 
 module.exports = app;
