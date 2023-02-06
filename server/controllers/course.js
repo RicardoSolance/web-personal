@@ -26,10 +26,9 @@ const getCourses = async (req, res, next) => {
       page: parseInt(page),
       limit: parseInt(limit),
     };
-
     Course.paginate({}, options, (error, courseStored) => {
       if (error) {
-        res.status(400).send({ msg: "Error al crear el curso" });
+        res.status(400).send({ msg: "Error al cargar el curso" });
       } else {
         res.status(200).send(courseStored);
       }
