@@ -49,7 +49,7 @@ const deleteMenu = async (req, res) => {
   try {
     const { id } = req.params;
     await Menu.findOneAndDelete({ _id: id });
-    res.status(200).send({ ok: 1 });
+    res.status(200).send({ msg: "Menu eliminado" });
   } catch (error) {
     next(error);
   }
