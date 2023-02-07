@@ -1,6 +1,7 @@
 const Blog = require("../models/blog");
 const image = require("../utils/image");
 const helpme = require("../helpers/converters");
+const { uploadImage } = require("../utils/firebase");
 
 const getBlogs = async (req, res, next) => {
   const { page = 1, limit = 6 } = req.query;
@@ -24,11 +25,18 @@ const getBlogs = async (req, res, next) => {
 };
 const createBlog = async (req, res, next) => {
   try {
-    const article = new Blog(req.body);
-    article.created = new Date();
-    const imagePath = image.getImagePath(req.files.miniature);
-    article.miniature = imagePath;
-    article.path = helpme.fillSpace(article.title);
+    const { title, content, miniature } = req.body;
+    let fullpath = helpme.fillSpace(title);
+    const post = {
+      title,
+      content,
+      path: fullpath,
+      created: new Date(),
+    };
+    if (req.file) {
+      post.miniature = await uploadImage(req.file, "blog");
+    }
+    const article = new Blog(post);
     article.save((error, blogStored) => {
       if (error) {
         res.status(400).send({ msg: "no se ha podido crear este blog" });
@@ -45,13 +53,12 @@ const updateBlog = async (req, res, next) => {
   try {
     const { id } = req.params;
     const article = req.body;
-    console.log("id", id);
     const blog = await Blog.findOne({ _id: id });
     if (!blog) {
       res.status(404).send({ msg: "No se puede actualizar este Blog" });
     } else {
       if (req.files.miniature) {
-        imagePath = image.getImagePath(req.files.avatar);
+        imagePath = await uploadImage(req.file, "blog");
         article.miniature = imagePath;
       }
       article.path = helpme.fillSpace(article.title);
