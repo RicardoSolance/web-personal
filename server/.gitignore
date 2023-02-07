@@ -4,7 +4,7 @@ constans.js
 # Ignora la carpeta node_modules
 node_modules
 
-
+config
 
 
 # Ignora los archivos relacionados a API keys
