@@ -1,0 +1,33 @@
+// Import Bootstrap variables for use within theme
+@import 'bootstrap/scss/functions.scss';
+@import 'bootstrap/scss/variables.scss';
+@import './utils/mixins.scss';
+@import './utils/variables.scss';
+
+// $main: #563d7c;
+// $main-2: #bcdd0e;
+// $disable: #75717c;
+
+// // Backgrounds
+// $bd-purple: #563d7c;
+// $bd-purple-light: #cbbde2;
+
+//scss-docs-start theme-colors-map
+$theme-colors: (
+    'primary': $primary,
+    'secondary': $secondary,
+    'success': $success,
+    'info': $info,
+    'warning': $warning,
+    'danger': $danger,
+    'light': $light,
+    'dark': $dark,
+    'white': $white,
+    'black': $black,
+    'main': $main,
+    'main-2': $main-2,
+    'disable': $disable
+);
+
+// Import Bootstrap
+@import 'bootstrap/scss/bootstrap.scss';
