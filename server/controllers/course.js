@@ -51,8 +51,8 @@ const updateCourse = async (req, res, next) => {
       res.status(404).send({ msg: "No se puede actualizar este curso" });
     } else {
       if (req.file) {
-        if (course.miniature) await deleteImage(course.miniature);
         console.log("miniature:", course.miniature);
+        if (course.miniature) await deleteImage(course.miniature);
         imagePath = await uploadImage(req.file, "course");
         dataToUpdate.miniature = imagePath;
       }

@@ -11,6 +11,7 @@
   "author": "ricardo solance",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/storage": "^6.9.2",
     "bcrypt": "^5.1.0",
     "connect-multiparty": "^2.2.0",
     "cors": "^2.8.5",
