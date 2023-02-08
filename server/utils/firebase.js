@@ -1,4 +1,7 @@
 const admin = require("firebase-admin");
+const { Storage } = require("@google-cloud/storage");
+const refFromURL = require("firebase-admin");
+const { v4 } = require("uuid");
 
 const serviceAccount = require("../config/firebase-key.json");
 
@@ -10,7 +13,8 @@ const bucket = admin.storage().bucket();
 
 async function uploadImage(data, direction) {
   const imagen = data;
-  const imgName = Date.now() + "." + imagen.originalname.split(".").pop();
+  //   const imgName = Date.now() + "." + imagen.originalname.split(".").pop();
+  const imgName = v4();
   const file = bucket.file(`${direction}/` + imgName);
   const stream = file.createWriteStream({
     contentType: imagen.mimetype,
@@ -28,35 +32,20 @@ async function uploadImage(data, direction) {
   });
 
   stream.end(imagen.buffer);
-  console.log("urrrrrll", await file.publicUrl());
   return await file.publicUrl();
 }
 
-// const uploadImage = async (req, res, next) => {
-//   const folder = req.route.path.split("/")[1];
-//   if (!req.file) return next();
-//   const imagen = req.file;
-//   const imgName = Date.now() + "." + imagen.originalname.split(".").pop();
-//   const file = bucket.file(`${folder}/` + imgName);
-//   const stream = file.createWriteStream({
-//     contentType: imagen.mimetype,
-//   });
+async function deleteImage(url) {
+  const storage = new Storage();
+  const fileN = url.replace("%", "/");
+  const fileName = fileN.split("/")[5];
+  const buck = fileN.split("/")[4];
+  // console.log(fileName);
+  await storage
+    .bucket(process.env.FBSTORAGEBUCKET)
+    .file(`${buck}/` + fileName)
+    .delete();
+  console.log("fileee name :", fileName);
+}
 
-//   stream.on("error", (error) => {
-//     console.error(error);
-//   });
-
-//   stream.on("finish", async (error) => {
-//     //hacer el archivo público
-//     await file.makePublic();
-//     //obtner la url de la imagen
-//     var path = await file.publicUrl();
-//     req.file.firebaseUrl = path;
-//     next();
-//   });
-
-//   stream.end(imagen.buffer);
-//   return path;
-// };
-
-module.exports = { uploadImage };
+module.exports = { uploadImage, deleteImage };

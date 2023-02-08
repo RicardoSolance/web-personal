@@ -1,14 +1,13 @@
 const express = require("express");
 const course = require("../controllers/course");
-const multiparty = require("connect-multiparty");
-const is = require("../middlewares/authenticated");
+const user = require("../middlewares/authenticated");
+const { multer_upload } = require("../helpers/converters");
 
-const md_upload = multiparty({ uploadDir: "./uploads/course" });
 const api = express.Router();
 
 api.get("/course", course.getCourses);
-api.post("/course", [is.isAuthenticated, md_upload], course.createCourse);
-api.patch("/course/:id", [is.isAuthenticated, md_upload], course.updateCourse);
-api.delete("/course/:id", [is.isAuthenticated], course.deleteCourse);
+api.post("/course", [user.isAuthenticated, multer_upload.single("miniature")], course.createCourse);
+api.patch("/course/:id", [user.isAuthenticated, multer_upload.single("miniature")], course.updateCourse);
+api.delete("/course/:id", [user.isAuthenticated], course.deleteCourse);
 
 module.exports = api;
