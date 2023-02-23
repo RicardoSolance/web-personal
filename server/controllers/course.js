@@ -45,18 +45,20 @@ const updateCourse = async (req, res, next) => {
   try {
     const { id } = req.params;
     const dataToUpdate = req.body;
-    console.log("id", id);
+    // console.log("id", id);
     const course = await Course.findOne({ _id: id });
+    console.log("curso a actualizar:", course);
     if (!course) {
       res.status(404).send({ msg: "No se puede actualizar este curso" });
     } else {
       if (req.file) {
-        console.log("miniature:", course.miniature);
-        if (course.miniature) await deleteImage(course.miniature);
+        if (course.miniature) {
+          await deleteImage(course.miniature);
+        }
         imagePath = await uploadImage(req.file, "course");
         dataToUpdate.miniature = imagePath;
       }
-
+      console.log("curso a ser actulizado", dataToUpdate);
       await Course.findOneAndUpdate({ _id: id }, dataToUpdate);
       res.status(200).send({ msg: "Curso Actuaizado" });
     }
