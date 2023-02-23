@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { Auth, Users, Blog } from "../pages/admin";
+import { Auth, Users, Blog, Courses, Menu, NewsLetter } from "../pages/admin";
 import { AdminLayout } from "../layouts/Admin";
 const user = { name: "ricardo" };
 function adminRouter() {
@@ -22,6 +22,9 @@ function adminRouter() {
             <Route key={path} path={path} element={loadLayout(AdminLayout, Blog)} />
           ))}
           <Route path="/admin/users" element={loadLayout(AdminLayout, Users)} />
+          <Route path="/admin/courses" element={loadLayout(AdminLayout, Courses)} />
+          <Route path="/admin/menu" element={loadLayout(AdminLayout, Menu)} />
+          <Route path="/admin/newsletter" element={loadLayout(AdminLayout, NewsLetter)} />
         </>
       )}
     </Routes>
