@@ -1,16 +1,14 @@
 import React from "react"
-
-
-
+import {BrowserRouter} from "react-router-dom";
+import AdminRouter from "./router/AdminRouter";
+import WebRouter from "./router/WebRouter";
 function App() {
-
-
   return (
-   <div>
-    <h1>web personal FRONTEND</h1>
-    <button class="btn btn-main">Primary button</button>
-   </div>
-  )
+   <BrowserRouter>
+      <WebRouter/>
+      <AdminRouter/>
+   </BrowserRouter>
+  );
 }
 
 export default App

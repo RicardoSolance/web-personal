@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("../utils/jwt");
 const image = require("../utils/image");
 const { use } = require("../router/user");
-
+const { uploadImage } = require("../utils/firebase");
 const salt = bcrypt.genSaltSync(10);
 const getMe = async (req, res, next) => {
   const { email, role, iat, exp } = req.user;
@@ -34,20 +34,20 @@ const createUser = async (req, res) => {
   const { fistname, lastname, password, email } = req.body;
   try {
     if (res.locals.role !== "admin") {
-      res
-        .status(401)
-        .send({ msg: "No tienes permisos para realizar esta operacion" });
+      res.status(401).send({ msg: "No tienes permisos para realizar esta operacion" });
     } else {
       if (!email) res.status(400).send({ msg: "El email es obligatorio" });
-      if (!password)
-        res.status(400).send({ msg: "la contrseña es obligatoria" });
+      if (!password) res.status(400).send({ msg: "la contrseña es obligatoria" });
       const hashPassword = bcrypt.hashSync(password, salt);
       const isUser = await User.findOne({ email });
       if (isUser) {
         res.status(400).send({ msg: " Usuario no puede ser registrado" });
       } else {
         let imagePath = "";
-        if (req.files.avatar) imagePath = image.getImagePath(req.files.avatar);
+        if (req.file) {
+          imagePath = await uploadImage(req.file, "avatar");
+        }
+        console.log("imagePath", imagePath);
         const user = new User({
           fistname,
           lastname,
@@ -80,11 +80,10 @@ const updateUser = async (req, res, next) => {
       } else {
         delete dataToUpdate.password;
       }
-
-      if (req.files.avatar) {
-        imagePath = image.getImagePath(req.files.avatar);
-        dataToUpdate.avatar = imagePath;
+      if (req.file) {
+        dataToUpdate.avatar = await uploadImage(req.file, "avatar");
       }
+
       await User.findOneAndUpdate({ email: email.toLowerCase() }, dataToUpdate);
       res.status(200).send({ msg: "Usuario Actuaizado" });
     }
