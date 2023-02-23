@@ -1,8 +1,8 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { Auth, Users } from "../pages/admin";
+import { Auth, Users, Blog } from "../pages/admin";
 import { AdminLayout } from "../layouts/Admin";
-const user = null;
+const user = { name: "ricardo" };
 function adminRouter() {
   const loadLayout = (Layout, Page) => {
     return (
@@ -18,10 +18,12 @@ function adminRouter() {
         <Route path="/admin/*" element={loadLayout(AdminLayout, Auth)} />
       ) : (
         <>
+          {["/admin", "/admin/blog"].map((path) => (
+            <Route key={path} path={path} element={loadLayout(AdminLayout, Blog)} />
+          ))}
           <Route path="/admin/users" element={loadLayout(AdminLayout, Users)} />
         </>
       )}
-      {/* <Route path='*' element={<Error404/>}/> */}
     </Routes>
   );
 }
