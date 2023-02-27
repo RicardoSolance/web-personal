@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { Auth, Users, Blog, Courses, Menu, NewsLetter } from "../pages/admin";
 import { AdminLayout } from "../layouts/Admin";
-const user = { name: "ricardo" };
+const user = null;
 function adminRouter() {
   const loadLayout = (Layout, Page) => {
     return (
@@ -15,7 +15,7 @@ function adminRouter() {
     <Routes>
       {/* Si el usuario es null-- me manda a la página de Login */}
       {!user ? (
-        <Route path="/admin/*" element={loadLayout(AdminLayout, Auth)} />
+        <Route path="/admin/*" element={<Auth />} />
       ) : (
         <>
           {["/admin", "/admin/blog"].map((path) => (
