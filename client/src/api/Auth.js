@@ -22,10 +22,29 @@ export class Auth {
       const url = `${this.baseApi}/${ENV.API_ROUTES.LOGIN}`;
       const resp = await axios.post(url, data, this.headers)
       const result = await resp.data
-      if(result.status !== 200) throw result
+      if(resp.status !== 200) throw result
       return result
     } catch (error) {
       throw error
     }
+  }
+
+  setAccessToken(token){
+    localStorage.setItem(ENV.JWT.ACCESS, token)
+  }
+  getAccessToken(){
+    return localStorage.getItem(ENV.JWT.ACCESS)
+  }
+
+  setRefreshToken(token){
+    localStorage.setItem(ENV.JWT.REFRESH, token)
+  }
+  getRefreshToken(){
+    return localStorage.getItem(ENV.JWT.REFRESH)
+  }
+
+  removeTokens(){
+    localStorage.removeItem(ENV.JWT.ACCESS)
+    localStorage.removeItem(ENV.JWT.REFRESH)
   }
 }

@@ -2,8 +2,10 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { Auth, Users, Blog, Courses, Menu, NewsLetter } from "../pages/admin";
 import { AdminLayout } from "../layouts/Admin";
+import { useAuth } from "../hooks";
 const user = null;
 function adminRouter() {
+  const { user } = useAuth();
   const loadLayout = (Layout, Page) => {
     return (
       <Layout>
