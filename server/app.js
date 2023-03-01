@@ -16,11 +16,10 @@ app.use(express.json()); //para habilitar la recepcion de datos en un request
 // config static folder
 app.use(express.static("uploads"));
 
-//config Header HTTP - CORS
+//config Header HTTP - CORS 
 app.use(cors());
 
 //config routings
-
 app.use(`/api/${process.env.API_VERSION}`, autRouter);
 app.use(`/api/${process.env.API_VERSION}`, userRouter);
 app.use(`/api/${process.env.API_VERSION}`, menuRouter);

@@ -10,14 +10,24 @@ function Auth() {
   };
   return (
     <div className="Auth container d-flex flex-column justify-content-center align-items-center">
-      <img src={ricon} alt="" srcset="" />
+      <img src={ricon} alt="" />
       <h3>wellcome to the admin panel </h3>
       <p>make sure to login, to gain access</p>
       {!switchTab ? <LoginForm /> : <RegisterForm />}
       {!switchTab ? (
-        <a onClick={changeTab}>registrate aqui</a>
+        <span>
+          registrate{" "}
+          <a onClick={changeTab} href="#">
+            aqui
+          </a>
+        </span>
       ) : (
-        <p onClick={changeTab}>Logeate aqui</p>
+        <span>
+          Logeate{" "}
+          <a onClick={changeTab} href="#">
+            aqui
+          </a>
+        </span>
       )}
     </div>
   );
