@@ -9,12 +9,12 @@
 // } = require("../constants");
 
 // // const url = process.env.URL_MONGO;
-// const url = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/`;
+// const url =  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/`;
 // mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // const db = mongoose.connection;
 
 // db.on("error", (error) => console.log(error));
-// db.once("open", () => console.log("Conexión con BD establecida"));
+// db.once("open", () => console.log("*******Conexión con BD establecida**********"));
 
 // module.exports = mongoose;
