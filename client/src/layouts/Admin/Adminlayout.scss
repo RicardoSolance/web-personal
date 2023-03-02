@@ -1,0 +1,36 @@
+@import "../../styles/style.scss";
+
+$widthMenu : 200px;
+
+.admin-layout{
+    display: flex;
+    min-height: 100vh;
+    max-height: 100vh;
+    background-color: rgb(105, 195, 82);
+    &-left{
+        background-color: rgb(4, 6, 56);
+        color: white;
+        width: $widthMenu;
+        .logo{
+            height: 30px;
+            width: 100%;
+            margin: 1em 0;
+        }
+    }
+    &-right{
+        width: calc(100% - $widthMenu);
+        &-header{
+            height: 50px;
+            background-color: rgb(4, 6, 56);
+            color: rgb(162, 178, 231);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 1em;
+        }
+        &-content {
+            position : relative;
+            margin: 1.5rem;
+        }
+    }
+}

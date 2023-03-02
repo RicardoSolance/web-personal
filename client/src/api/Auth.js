@@ -28,7 +28,19 @@ export class Auth {
       throw error
     }
   }
-
+  async refreshToken(token){
+    try {
+      console.log("refreshtoken",token);
+      const url = `${this.baseApi}/${ENV.API_ROUTES.REFRESH_ACCESS_TOKEN}`;
+      const resp = await axios.post(url, token, this.headers)
+      console.log(resp);
+      const result = await resp.data
+      if(resp.status !== 200) throw result
+      return result
+    } catch (error) {
+      throw error
+    }
+  }
   setAccessToken(token){
     localStorage.setItem(ENV.JWT.ACCESS, token)
   }
